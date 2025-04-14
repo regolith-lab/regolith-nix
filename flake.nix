@@ -21,7 +21,7 @@
         remontoire
         trawl
         i3xrocks
-        libtrawlb
+        libtrawldb
         regolith-look-extra
         i3status-rs
         sway-regolith
@@ -64,7 +64,7 @@
 
         packages."x86_64-linux".i3xrocks = pkgs.callPackage ./packages/i3xrocks.nix{}; 
 
-        packages."x86_64-linux".libtrawlb = pkgs.callPackage ./packages/libtrawldb.nix{}; 
+        packages."x86_64-linux".libtrawldb = pkgs.callPackage ./packages/libtrawldb.nix{}; 
         
         packages."x86_64-linux".regolith-look-extra = pkgs.callPackage ./packages/regolith-look-extra.nix{}; 
         

@@ -10,6 +10,10 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v14
+      with:
+        name: sandptel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix flake check
     - run: echo "The following changes do not evaluate as proper nix expressions - https://nix.dev/manual/nix/2.17/command-ref/new-cli/nix3-flake-check"
     
@@ -20,6 +24,10 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v14
+      with:
+        name: sandptel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#ilia
 
   rofication:
@@ -29,6 +37,10 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v14
+      with:
+        name: sandptel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#rofication
 
   regolith-powerd-inputd-displayd:
@@ -38,6 +50,10 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v14
+      with:
+        name: sandptel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#regolith-powerd
     - run: nix build .#regolith-inputd
     - run: nix build .#regolith-displayd
@@ -50,6 +66,10 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v14
+      with:
+        name: sandptel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#sway-regolith
 
   trawl:
@@ -59,6 +79,10 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v14
+      with:
+        name: sandptel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#trawl
 
   xrescat:
@@ -68,6 +92,10 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v14
+      with:
+        name: sandptel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#xrescat
     
   regolith-session:
@@ -77,6 +105,10 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v14
+      with:
+        name: sandptel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#regolith-session
     
   status-bar:
@@ -86,6 +118,10 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v14
+      with:
+        name: sandptel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#i3-swap-focus
     - run: nix build .#i3status-rs
     - run: nix build .#i3xrocks
@@ -97,6 +133,10 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+    - uses: cachix/cachix-action@v14
+      with:
+        name: sandptel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#regolith-wm-config
     - run: nix build .#regolith-xresources
     - run: nix build .#regolith-ftue
