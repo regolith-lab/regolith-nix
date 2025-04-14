@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
 jobs:
-  flake-check:
+  nix-flake-check:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -12,16 +12,52 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - run: nix flake check
     - run: echo "The following changes do not evaluate as proper nix expressions - https://nix.dev/manual/nix/2.17/command-ref/new-cli/nix3-flake-check"
-
-  development-environment-check:
+    
+  ilia:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
-    - run: nix develop
-    - run: echo "This builds all the applications in the flake file individually for devShell.default in the flake file."
+    - run: nix build .#ilia
 
+  rofication:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix build .#rofication
+
+  regolith-powerd-inputd-displayd:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix build .#regolith-powerd
+    - run: nix build .#regolith-inputd
+    - run: nix build .#regolith-displayd
+
+  sway-regolith:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix build .#sway-regolith
+
+  trawl:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix build .#trawl
     
     
