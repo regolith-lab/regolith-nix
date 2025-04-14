@@ -14,6 +14,7 @@ jobs:
       with:
         name: sandptel
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
     - run: nix flake check
     - run: echo "The following changes do not evaluate as proper nix expressions - https://nix.dev/manual/nix/2.17/command-ref/new-cli/nix3-flake-check"
     
