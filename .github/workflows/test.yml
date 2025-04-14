@@ -3,15 +3,25 @@ on:
   pull_request:
   push:
 jobs:
-  tests:
+  flake-check:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
       with:
         nix_path: nixpkgs=channel:nixos-unstable
-    - run: ls
     - run: nix flake check
+    - run: echo "The following changes do not evaluate as proper nix expressions - https://nix.dev/manual/nix/2.17/command-ref/new-cli/nix3-flake-check"
+
+  development-environment-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix develop
+    - run: echo "This builds all the applications in the flake file individually for devShell.default in the flake file."
 
     
     
