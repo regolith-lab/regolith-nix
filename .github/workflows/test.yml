@@ -41,6 +41,7 @@ jobs:
     - run: nix build .#regolith-powerd
     - run: nix build .#regolith-inputd
     - run: nix build .#regolith-displayd
+    - run: nix build .#libtrawldb
 
   sway-regolith:
     runs-on: ubuntu-latest
@@ -59,5 +60,48 @@ jobs:
       with:
         nix_path: nixpkgs=channel:nixos-unstable
     - run: nix build .#trawl
+
+  xrescat:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix build .#xrescat
     
+  regolith-session:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix build .#regolith-session
+    
+  status-bar:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix build .#i3-swap-focus
+    - run: nix build .#i3status-rs
+    - run: nix build .#i3xrocks
+
+  regolith-config-styles-essentials:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: cachix/install-nix-action@v22
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: nix build .#regolith-wm-config
+    - run: nix build .#regolith-xresources
+    - run: nix build .#regolith-ftue
+    - run: nix build .#remontoire
+    - run: nix build .#regolith-styles
+    - run: nix build .#regolith-look-default
+    - run: nix build .#regolith-look-extra
     
