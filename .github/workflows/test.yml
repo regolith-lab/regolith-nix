@@ -1,10 +1,22 @@
 name: "Test"
 on:
   pull_request:
+    paths:
+      - 'flake.nix'
+      - 'flake.lock'
+      - '**.nix'
+      - '.github/workflows/**'
   push:
+    paths:
+      - 'flake.nix'
+      - 'flake.lock'
+      - '**.nix'
+      - '.github/workflows/**'
+
 jobs:
   nix-flake-check:
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -14,12 +26,12 @@ jobs:
       with:
         name: sandptel
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-
     - run: nix flake check
     - run: echo "The following changes do not evaluate as proper nix expressions - https://nix.dev/manual/nix/2.17/command-ref/new-cli/nix3-flake-check"
     
   ilia:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'ilia') || contains(github.event.push.added || github.event.pull_request.added, 'ilia') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -33,6 +45,7 @@ jobs:
 
   rofication:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'rofication') || contains(github.event.push.added || github.event.pull_request.added, 'rofication') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -46,6 +59,14 @@ jobs:
 
   regolith-powerd-inputd-displayd:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'regolith-powerd') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'regolith-inputd') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'regolith-displayd') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'libtrawldb') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'regolith-powerd') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'regolith-inputd') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'regolith-displayd') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'libtrawldb') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -62,6 +83,7 @@ jobs:
 
   sway-regolith:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'sway-regolith') || contains(github.event.push.added || github.event.pull_request.added, 'sway-regolith') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -75,6 +97,7 @@ jobs:
 
   trawl:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'trawl') || contains(github.event.push.added || github.event.pull_request.added, 'trawl') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -88,6 +111,7 @@ jobs:
 
   xrescat:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'xrescat') || contains(github.event.push.added || github.event.pull_request.added, 'xrescat') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -101,6 +125,7 @@ jobs:
 
   fhs:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'fhs') || contains(github.event.push.added || github.event.pull_request.added, 'fhs') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -114,6 +139,7 @@ jobs:
 
   virtual-machine:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'vm') || contains(github.event.push.added || github.event.pull_request.added, 'vm') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -127,6 +153,8 @@ jobs:
     
   regolith-session:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'regolith-session') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'regolith-session') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -142,6 +170,12 @@ jobs:
     
   status-bar:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'i3-swap-focus') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'i3status-rs') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'i3xrocks') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'i3-swap-focus') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'i3status-rs') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'i3xrocks') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -157,6 +191,20 @@ jobs:
 
   regolith-config-styles-essentials:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.push.modified || github.event.pull_request.modified, 'regolith-wm-config') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'regolith-xresources') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'regolith-ftue') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'remontoire') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'regolith-styles') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'regolith-look-default') || 
+             contains(github.event.push.modified || github.event.pull_request.modified, 'regolith-look-extra') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'regolith-wm-config') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'regolith-xresources') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'regolith-ftue') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'remontoire') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'regolith-styles') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'regolith-look-default') || 
+             contains(github.event.push.added || github.event.pull_request.added, 'regolith-look-extra') }}
     steps:
     - uses: actions/checkout@v3
     - uses: cachix/install-nix-action@v22
@@ -173,4 +221,3 @@ jobs:
     - run: nix build .#regolith-styles
     - run: nix build .#regolith-look-default
     - run: nix build .#regolith-look-extra
-    
