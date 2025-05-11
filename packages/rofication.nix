@@ -12,26 +12,27 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "regolith-linux";
     repo = "regolith-rofication";
-    rev = "v${version}";
+    tag = "v${version}";
     hash = "sha256-Bn57hHuW1yGxBBSiqXCIAbhB5ayY9TvZ8Mfn8I47y8E=";
   };
 
-  propagatedBuildInputs = with python3.pkgs; [dbus-python pygobject3];
+  dependencies = with python3.pkgs; [
+    dbus-python
+    pygobject3
+  ];
 
   build-system = [
     python3.pkgs.setuptools
     python3.pkgs.wheel
   ];
 
-  pythonImportsCheck = [
-    "rofication"
-  ];
+  pythonImportsCheck = [ "rofication" ];
 
   meta = {
     description = "Notification system that provides a Rofi front-end";
     homepage = "https://github.com/regolith-linux/regolith-rofication";
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [ ];
+    maintainers = with lib.maintainers; [ sandptel ];
     mainProgram = "rofication-daemon";
   };
 }
