@@ -11,7 +11,7 @@
   remontoire = pkgs.callPackage ./remontoire.nix { };
   trawl = pkgs.callPackage ./trawl.nix { };
   i3xrocks = pkgs.callPackage ./i3xrocks.nix { };
-  libtrawlb = pkgs.callPackage ./libtrawldb.nix { };
+  libtrawldb = pkgs.callPackage ./libtrawldb.nix { };
   regolith-look-extra = pkgs.callPackage ./regolith-look-extra.nix { };
   i3status-rs = pkgs.callPackage ./i3status-rs.nix { };
   sway-regolith = pkgs.callPackage ../sway-regolith/default.nix { };
