@@ -89,7 +89,7 @@
       packages."x86_64-linux".regolith-xresources = pkgs.callPackage ./packages/xresources-config.nix { };
 
       # the default runScript is fish and this creates a shell that follows fhs file format -->https://ryantm.github.io/nixpkgs/builders/special/fhs-environments/
-      # packages."x86_64-linux".fhs = pkgs.callPackage ./fhs.nix { };
+      packages."x86_64-linux".fhs = pkgs.callPackage ./fhs.nix { };
 
       # this runs via --> nix run .#nixosConfigurations.vm.config.system.build.vm
       devShells.${system}.default = pkgs.mkShell {

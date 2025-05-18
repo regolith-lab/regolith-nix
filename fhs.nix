@@ -1,44 +1,15 @@
 { name ? "regolith-environment", pkgs, runScript ? "${pkgs.fish}/bin/fish" }:
 
 let
-  regolith-packages = import ./packages { inherit pkgs; };
-
-  # Get all packages including their dependencies
-  regolith-pkgs = [
-    regolith-packages.regolith-styles
-    regolith-packages.ilia
-    regolith-packages.regolith-powerd
-    regolith-packages.regolith-displayd
-    regolith-packages.regolith-inputd
-    regolith-packages.regolith-ftue
-    regolith-packages.xrescat
-    regolith-packages.rofication
-    regolith-packages.remontoire
-    regolith-packages.trawl
-    regolith-packages.i3xrocks
-    regolith-packages.libtrawldb
-    regolith-packages.regolith-look-extra
-    regolith-packages.i3status-rs
-    regolith-packages.sway-regolith
-    regolith-packages.regolith-session
-    regolith-packages.regolith-look-default
-    regolith-packages.regolith-wm-config
-    regolith-packages.i3-swap-focus
-    regolith-packages.regolith-systemd-units
-    regolith-packages.regolith-i3status-config
-    # regolith-packages.regolith-xresources
-  ];
-
-  # Collect all build inputs recursively
-  all-inputs = builtins.concatMap
-    (p: if builtins.hasAttr "buildInputs" p then p.buildInputs ++ [ p ] else [ p ])
-    regolith-pkgs;
+  # regolith-packages = import ./packages { inherit pkgs; };
+  regolith-session = pkgs.callPackage ./packages/regolith-session.nix { }; 
 in
 pkgs.buildFHSEnv {
   inherit name;
 
   targetPkgs = pkgs: with pkgs; [
     # Basic system utilities
+    regolith-session
     mate.mate-polkit
     bash
     coreutils
@@ -97,7 +68,7 @@ pkgs.buildFHSEnv {
     nautilus
   ];
 
-  multiPkgs = pkgs: all-inputs;
+  # multiPkgs = pkgs: all-inputs;
 
   extraOutputsToInstall = [ "usr" "etc" "lib" "share" ];
 
