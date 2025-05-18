@@ -64,7 +64,7 @@
 
       packages."x86_64-linux".i3xrocks = pkgs.callPackage ./packages/i3xrocks.nix { };
 
-      packages."x86_64-linux".libtrawlb = pkgs.callPackage ./packages/libtrawldb.nix { };
+      packages."x86_64-linux".libtrawldb = pkgs.callPackage ./packages/libtrawldb.nix { };
 
       packages."x86_64-linux".regolith-look-extra = pkgs.callPackage ./packages/regolith-look-extra.nix { };
 
@@ -87,20 +87,15 @@
       packages."x86_64-linux".regolith-styles = pkgs.callPackage ./packages/regolith-styles.nix { };
 
       packages."x86_64-linux".regolith-xresources = pkgs.callPackage ./packages/xresources-config.nix { };
+
       # the default runScript is fish and this creates a shell that follows fhs file format -->https://ryantm.github.io/nixpkgs/builders/special/fhs-environments/
-      packages."x86_64-linux".fhs = pkgs.callPackage ./fhs.nix { };
+      # packages."x86_64-linux".fhs = pkgs.callPackage ./fhs.nix { };
 
       # this runs via --> nix run .#nixosConfigurations.vm.config.system.build.vm
-      devShells.${system}.default =
-        let
-          fhs = pkgs.callPackage ./fhs.nix { };
-        in
-        pkgs.mkShell {
-          packages = [ fhs ] ++ allPackages;
-          shellHook = ''
-            exec ${fhs}/bin/regolith-environment
-          '';
+      devShells.${system}.default = pkgs.mkShell {
+        packages = builtins.attrValues self.packages.${system};
         };
+
       #pass regolith-session-wayland to regolith.nix
       # nixosModules.regolith-session-wayland = { config, pkgs, lib, ... }:
       # let
@@ -116,8 +111,7 @@
       #   _module.args.regolith-session-wayland = regolith-session-wayland;
       # };
       nixosModules.regolith-session-wayland = import ./modules/regolith.nix;
-      # here I am trying to set runScript to regolith-session-wayland package 
-      #directly runs session-wayland
+      
       # here I am trying to set runScript to regolith-session-wayland package 
       #directly runs session-wayland
       packages."x86_64-linux".regolith-session-wayland =

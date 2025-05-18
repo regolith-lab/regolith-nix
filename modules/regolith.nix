@@ -67,7 +67,7 @@ in
       regolith-packages.remontoire
       regolith-packages.trawl
       regolith-packages.i3xrocks
-      regolith-packages.libtrawlb
+      regolith-packages.libtrawldb
       regolith-packages.i3-swap-focus
       regolith-packages.regolith-systemd-units
       regolith-packages.regolith-i3status-config

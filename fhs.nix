@@ -16,7 +16,7 @@ let
     regolith-packages.remontoire
     regolith-packages.trawl
     regolith-packages.i3xrocks
-    regolith-packages.libtrawlb
+    regolith-packages.libtrawldb
     regolith-packages.regolith-look-extra
     regolith-packages.i3status-rs
     regolith-packages.sway-regolith
