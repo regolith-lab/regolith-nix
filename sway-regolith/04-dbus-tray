@@ -71,7 +71,7 @@ Index: sway-regolith/swaybar/bar.c
 ===================================================================
 --- sway-regolith.orig/swaybar/bar.c
 +++ sway-regolith/swaybar/bar.c
-@@ -29,6 +29,7 @@
+@@ -28,6 +28,7 @@
  #include "pool-buffer.h"
  #include "wlr-layer-shell-unstable-v1-client-protocol.h"
  #include "xdg-output-unstable-v1-client-protocol.h"
@@ -79,7 +79,7 @@ Index: sway-regolith/swaybar/bar.c
  
  void free_workspaces(struct wl_list *list) {
  	struct swaybar_workspace *ws, *tmp;
-@@ -365,6 +366,8 @@ static void handle_global(void *data, st
+@@ -364,6 +365,8 @@ static void handle_global(void *data, st
  	} else if (strcmp(interface, wp_cursor_shape_manager_v1_interface.name) == 0) {
  		bar->cursor_shape_manager = wl_registry_bind(registry, name,
  			&wp_cursor_shape_manager_v1_interface, 1);
@@ -88,7 +88,7 @@ Index: sway-regolith/swaybar/bar.c
  	}
  }
  
-@@ -539,6 +542,7 @@ void bar_teardown(struct swaybar *bar) {
+@@ -538,6 +541,7 @@ void bar_teardown(struct swaybar *bar) {
  #if HAVE_TRAY
  	destroy_tray(bar->tray);
  #endif
@@ -264,7 +264,7 @@ Index: sway-regolith/swaybar/render.c
  		double x, double y, uint32_t button, bool released, void *data) {
  	struct i3bar_block *block = data;
  	struct status_line *status = output->bar->status;
-@@ -599,6 +600,7 @@ static uint32_t render_binding_mode_indi
+@@ -601,6 +602,7 @@ static uint32_t render_binding_mode_indi
  
  static enum hotspot_event_handling workspace_hotspot_callback(
  		struct swaybar_output *output, struct swaybar_hotspot *hotspot,
@@ -277,14 +277,14 @@ Index: sway-regolith/swaybar/tray/item.c
 --- sway-regolith.orig/swaybar/tray/item.c
 +++ sway-regolith/swaybar/tray/item.c
 @@ -8,6 +8,7 @@
- #include "swaybar/bar.h"
  #include "swaybar/config.h"
+ #include "swaybar/image.h"
  #include "swaybar/input.h"
 +#include "swaybar/tray/dbusmenu.h"
  #include "swaybar/tray/host.h"
  #include "swaybar/tray/icon.h"
  #include "swaybar/tray/item.h"
-@@ -333,8 +334,9 @@ void destroy_sni(struct swaybar_sni *sni
+@@ -332,8 +333,9 @@ void destroy_sni(struct swaybar_sni *sni
  	free(sni);
  }
  
@@ -296,7 +296,7 @@ Index: sway-regolith/swaybar/tray/item.c
  	const char *method = NULL;
  	struct tray_binding *binding = NULL;
  	wl_list_for_each(binding, &sni->tray->bar->config->tray_bindings, link) {
-@@ -365,7 +367,11 @@ static void handle_click(struct swaybar_
+@@ -364,7 +366,11 @@ static void handle_click(struct swaybar_
  		method = "ContextMenu";
  	}
  
@@ -309,7 +309,7 @@ Index: sway-regolith/swaybar/tray/item.c
  		char dir = method[strlen("Scroll")];
  		char *orientation = (dir == 'U' || dir == 'D') ? "vertical" : "horizontal";
  		int sign = (dir == 'U' || dir == 'L') ? -1 : 1;
-@@ -385,6 +391,7 @@ static int cmp_sni_id(const void *item,
+@@ -384,6 +390,7 @@ static int cmp_sni_id(const void *item,
  
  static enum hotspot_event_handling icon_hotspot_callback(
  		struct swaybar_output *output, struct swaybar_hotspot *hotspot,
@@ -317,7 +317,7 @@ Index: sway-regolith/swaybar/tray/item.c
  		double x, double y, uint32_t button, bool released, void *data) {
  	sway_log(SWAY_DEBUG, "Clicked on %s", (char *)data);
  
-@@ -406,7 +413,8 @@ static enum hotspot_event_handling icon_
+@@ -405,7 +412,8 @@ static enum hotspot_event_handling icon_
  				(int) output->output_height - config->gaps.bottom - y);
  
  		sway_log(SWAY_DEBUG, "Guessing click position at (%d, %d)", global_x, global_y);
@@ -331,7 +331,7 @@ Index: sway-regolith/swaybar/tray/tray.c
 ===================================================================
 --- sway-regolith.orig/swaybar/tray/tray.c
 +++ sway-regolith/swaybar/tray/tray.c
-@@ -110,7 +110,7 @@ static int cmp_output(const void *item,
+@@ -118,7 +118,7 @@ static int cmp_output(const void *item,
  
  uint32_t render_tray(cairo_t *cairo, struct swaybar_output *output, double *x) {
  	struct swaybar_config *config = output->bar->config;
@@ -376,7 +376,7 @@ Index: sway-regolith/swaybar/tray/dbusmenu.c
 ===================================================================
 --- /dev/null
 +++ sway-regolith/swaybar/tray/dbusmenu.c
-@@ -0,0 +1,1367 @@
+@@ -0,0 +1,1348 @@
 +#define _POSIX_C_SOURCE 200809L
 +#include <linux/input-event-codes.h>
 +#include <pool-buffer.h>
@@ -388,7 +388,6 @@ Index: sway-regolith/swaybar/tray/dbusmenu.c
 +#include <xdg-shell-client-protocol.h>
 +#include <xdg-shell-protocol.h>
 +
-+#include "background-image.h"
 +#include "cairo.h"
 +#include "cairo_util.h"
 +#include "list.h"
@@ -788,25 +787,7 @@ Index: sway-regolith/swaybar/tray/dbusmenu.c
 +				if (sni->icon_theme_path) {
 +					list_add(icon_search_paths, sni->icon_theme_path);
 +				}
-+				int min_size, max_size;
-+				char *icon_path =
-+				find_icon(tray->themes, icon_search_paths, item->icon_name, size,
-+						config->icon_theme, &min_size, &max_size);
 +				list_free(icon_search_paths);
-+
-+				if (icon_path) {
-+					cairo_surface_t *icon = load_background_image(icon_path);
-+					free(icon_path);
-+					cairo_surface_t *icon_scaled =
-+					cairo_image_surface_scale(icon, size, size);
-+					cairo_surface_destroy(icon);
-+
-+					cairo_set_source_surface(cairo, icon_scaled, x, y);
-+					cairo_rectangle(cairo, x, y, size, size);
-+					cairo_fill(cairo);
-+					cairo_surface_destroy(icon_scaled);
-+					is_icon_drawn = true;
-+				}
 +			} else if (item->icon_data) {
 +				cairo_surface_t *icon = cairo_image_surface_scale(item->icon_data, size, size);
 +				cairo_set_source_surface(cairo, icon, x, y);

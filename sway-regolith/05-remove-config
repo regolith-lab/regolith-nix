@@ -2,7 +2,7 @@ Index: sway-regolith/meson.build
 ===================================================================
 --- sway-regolith.orig/meson.build
 +++ sway-regolith/meson.build
-@@ -244,23 +244,6 @@ if get_option('swaynag')
+@@ -226,23 +226,6 @@ if get_option('swaynag')
  	subdir('swaynag')
  endif
  

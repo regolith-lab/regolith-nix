@@ -15,7 +15,7 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-/nUvV0tgPzOJ5L+EXw6J/1lgRT+BPnlkv7yzko15o6A";
   };
 
-  cargoHash = "sha256-5kDWFJ6kmzrs5U1uOfmGTLE+z8DGcS+BIv8ZIUU4StA=";
+  cargoHash = "sha256-TXdqphvt55PkTiXXjftSRkoMyEyBW0x0csjNPruYtoo=";
 
   postInstall = ''
     mkdir -p $out/lib/systemd/user

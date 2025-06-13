@@ -15,7 +15,7 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-WUjUs9h+zzq9lFqnEHvsCJ322HVPZldUOt0LZdKbUFs=";
   };
 
-  cargoHash = "sha256-SJ99TqEMMyDGqDwJ3x7EJ/jXe0iNvctTJcPnO5uVXW0=";
+  cargoHash = "sha256-uA7h4nMpYtqtZGm1ifTVRrEfkcKjysdqL25VXqhJekk=";
 
   postInstall = ''
     install -Dm644 data/regolith-init-kanshi.service $out/lib/systemd/user/regolith-init-kanshi.service
